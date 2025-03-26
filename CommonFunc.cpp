@@ -14,14 +14,13 @@ SDL_Texture* babe = NULL;
 
 
 Mix_Music* Music = NULL;
+Mix_Music* BgMusic = NULL;
 TTF_Font* font = NULL;
 
 
-
-
 SDL_Rect babeSrcRect = { 0,0,48,48 };
-SDL_Rect babeRect = { 592,112,48,48 };
-SDL_Rect babeDestRect = { 592,112,48,48 };
+SDL_Rect babeDestRect = { 500,112,48,48 };//luu vi tri theo camera
+SDL_Rect babeRect = { 500,112,48,48 };//luu vi tri co dinh
 
 Uint32  timeVal, startTime;
 
@@ -30,7 +29,6 @@ SDL_Rect BgSrc = { 0,0,SCREEN_WIDTH,SCREEN_HEIGHT }, BgDest = { 0,0,SCREEN_WIDTH
 GameObject* player;
 textObj timeGame;
 Map* mapper;
-
 
 
 SDL_Renderer* Game::renderer = nullptr;
@@ -71,26 +69,27 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     }
     else
     {
-        // isRunning = false;
+        isRunning = false;
     }
 
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
     Music = Mix_LoadMUS("sound/win.wav");
-    if (Music==NULL) cout << SDL_GetError();
+    BgMusic = Mix_LoadMUS("sound/bgMusic.wav");
+    Mix_VolumeMusic(MIX_MAX_VOLUME/7);
+    if (Music==NULL||BgMusic==NULL) cout << SDL_GetError();
 
 
     win = false;
 
 
-    //load back and fore
+    //load back and fore ground
     background = texture::LoadTexture("image/background.png");
     if (background==NULL) cout <<1<< SDL_GetError()<<endl;
     foreground = texture::LoadTexture("image/foreground.png");
     babe = texture::LoadTexture("image/babe.png");
     victory = texture::LoadTexture("image/victory.png");
     imgStart = texture::LoadTexture("image/main_menu.png");
-
 
 
     player = new GameObject(64, LEVEL_HEIGHT - 100);
@@ -195,6 +194,7 @@ void Game::handleEvents()
 void Game::update()
 {
 
+
     player->Update(mapper->tile, mapper->mapping);
     babeDestRect.y = babeRect.y - player->Camera.y;
 
@@ -209,7 +209,10 @@ void Game::update()
     }
     if (player->isWin == false)
     {
-        Mix_HaltMusic();
+        if (!Mix_PlayingMusic())
+        {
+            Mix_PlayMusic(BgMusic, -1);
+        }
     }
 }
 
@@ -247,9 +250,11 @@ void Game::render()
     SDL_RenderClear(renderer);
     mapper->DrawMap(player->Camera);
     texture::Draw(background, player->Camera, BgDest);
+
     player->Render();
     texture::Draw(foreground, player->Camera, BgDest);
     texture::Draw(babe, babeSrcRect, babeDestRect);
+
 
 
     //Time counting and render on the screen
@@ -298,6 +303,10 @@ void Game::clean()
     cout << "Game cleaned" << endl;
 }
 
+void Game::setWin(bool b)
+{
+    isRunning= b;
+}
 
 bool Game::running()
 {

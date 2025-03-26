@@ -4,7 +4,7 @@
 #include "texture.h"
 #include "map.h"
 
-SDL_Rect babeRect2 = { 592,112,48,48 };
+SDL_Rect babeRect2 = { 500,112,48,48 };
 
 void GameObject::SetClips(){
     //Run RIGHT
@@ -86,15 +86,17 @@ void GameObject::SetClips(){
 
 
 GameObject::GameObject(int x, int y){
-    //Loading Texture
+    //Loading Texture for player
     objTextureRight = texture::LoadTexture("image/king_right_2.png");
     if (objTextureRight==NULL) cout << SDL_GetError();
     objTextureLeft = texture::LoadTexture("image/king_left_2.png");
-    //Loading Audio
+    //Loading Audio for player
     High = Mix_LoadWAV("sound/high.wav");
     if (High==NULL) cout << SDL_GetError();
     Step = Mix_LoadWAV("sound/step.wav");
     Jumped = Mix_LoadWAV("sound/jump.wav");
+
+    Mix_VolumeChunk(High,MIX_MAX_VOLUME/5);
 
     xpos = x;
     ypos = y;
@@ -144,7 +146,6 @@ bool GameObject::checkCollision2(SDL_Rect a, SDL_Rect b)
     int topA, topB;
     int bottomA, bottomB;
 
-    // A and B 4 peak of the rect
     leftA = a.x;
     rightA = a.x + a.w;
     topA = a.y;
@@ -155,7 +156,6 @@ bool GameObject::checkCollision2(SDL_Rect a, SDL_Rect b)
     topB = b.y;
     bottomB = b.y + b.h;
 
-    // check if 2 rect touch the other
     if (bottomA <= topB || topA >= bottomB || rightA <= leftB || leftA >= rightB) {
         return false;
     }
@@ -173,8 +173,6 @@ void GameObject::CollideVertical(SDL_Rect& col, SDL_Rect Tile[][60], int Mapping
         {
             if (Mapping[row][column] != 3 && checkCollision2(col, Tile[row][column]))
             {
-                //Mix_PlayChannel( -1, High, 0 );
-
 
                 if (yvel > 0)
                 {
@@ -370,7 +368,7 @@ void GameObject::Update(SDL_Rect Tile[][60], int Mapping[][60])
     destRect.x = (int)xpos;
     destRect.y = (int)ypos - Camera.y;
 
-    if (checkCollision2(collider, babeRect2) == true) isWin = true;//khi gap babe thi win
+    if (checkCollision2(collider, babeRect2) == true) isWin = true;//Dieu kien win
 
 }
 
@@ -449,3 +447,4 @@ void GameObject::ObjectClose()
     objTextureLeft = NULL;
     High = NULL;
 }
+

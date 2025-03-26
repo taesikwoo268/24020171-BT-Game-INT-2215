@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1742755812 source:c:\users\admin\documents\c++ projects\ltnc 24020171\main.cpp
+1742998803 source:c:\users\admin\documents\c++ projects\ltnc 24020171\main.cpp
 	<iostream>
 	<string>
 	<stdio.h>
@@ -404,31 +404,32 @@
 	"begin_code.h"
 	"close_code.h"
 
-1742809806 c:\users\admin\documents\c++ projects\ltnc 24020171\commonfunc.h
+1742997924 c:\users\admin\documents\c++ projects\ltnc 24020171\commonfunc.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>
 	<SDL_ttf.h>
 	<iostream>
 
-1742755480 source:c:\users\admin\documents\c++ projects\ltnc 24020171\player.cpp
+1742998133 source:c:\users\admin\documents\c++ projects\ltnc 24020171\player.cpp
 	"CommonFunc.h"
 	"player.h"
 	"texture.h"
 	"map.h"
 
-1742792539 c:\users\admin\documents\c++ projects\ltnc 24020171\player.h
+1742997924 c:\users\admin\documents\c++ projects\ltnc 24020171\player.h
 	"CommonFunc.h"
-	<math.h>
 
-1742809004 source:c:\users\admin\documents\c++ projects\ltnc 24020171\map.cpp
+1742994945 source:c:\users\admin\documents\c++ projects\ltnc 24020171\map.cpp
 	"map.h"
 	"texture.h"
 	"CommonFunc.h"
 	"player.h"
 	<iostream>
+	<fstream>
+	<vector>
 
-1742790695 c:\users\admin\documents\c++ projects\ltnc 24020171\map.h
+1742994859 c:\users\admin\documents\c++ projects\ltnc 24020171\map.h
 	"CommonFunc.h"
 	"player.h"
 
@@ -441,7 +442,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1742811043 source:c:\users\admin\documents\c++ projects\ltnc 24020171\commonfunc.cpp
+1742999237 source:c:\users\admin\documents\c++ projects\ltnc 24020171\commonfunc.cpp
 	"CommonFunc.h"
 	"texture.h"
 	"textObj.h"

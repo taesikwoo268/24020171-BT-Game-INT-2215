@@ -1,7 +1,7 @@
 
 #pragma once
-#ifndef MAP_H_INCLUDED
-#define MAP_H_INCLUDED
+#ifndef MAP_H_
+#define MAP_H_
 
 #include "CommonFunc.h"
 #include "player.h"
@@ -24,9 +24,9 @@ public:
     Map();
     ~Map();
 
-    void LoadMap(int arr[240][60]);
+
+    void LoadMap(const char*path);
     void DrawMap(SDL_Rect Camera);
-//    void DrawBabe(SDL_Rect Camera);
     void CloseMap();
 
     bool checkCollision(SDL_Rect a, SDL_Rect b);

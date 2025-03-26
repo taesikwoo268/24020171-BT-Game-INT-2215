@@ -1,12 +1,9 @@
 
 #pragma once
-#ifndef GAMEOBJECT_H_INCLUDED
-#define GAMEOBJECT_H_INCLUDED
+#ifndef GAMEOBJECT_H_
+#define GAMEOBJECT_H_
 
 #include "CommonFunc.h"
-#include <math.h>
-
-//#include "timer.h"
 
 #define gravity 0.8
 #define MAX_FALL_SPEED 20
@@ -48,7 +45,7 @@ private:
     SDL_Texture* objTexturePJump = NULL;
     SDL_Rect srcRect, destRect, collider;
 
-    // sound for the game
+    // nhung am thanh hieu ung ngan
     Mix_Chunk* High = NULL;
     Mix_Chunk* Step = NULL;
     Mix_Chunk* Jumped = NULL;
@@ -114,4 +111,6 @@ public:
 
 
 };
+
+
 #endif

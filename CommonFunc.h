@@ -1,4 +1,4 @@
-
+#pragma once
 #ifndef COMMON_FUNCTION_H_
 #define COMMON_FUNCTION_H_
 
@@ -8,7 +8,6 @@
 #include <SDL_ttf.h>
 #include <iostream>
 using namespace std;
-
 
 
 const int FPS = 60;
@@ -27,6 +26,7 @@ private:
     SDL_Window* window = NULL;
 
 public:
+
     Game();
     ~Game();
 
@@ -41,6 +41,7 @@ public:
 
     bool running();
     bool winning();
+    void setWin(bool b);
 
     static SDL_Renderer* renderer;
 
