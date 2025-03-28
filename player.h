@@ -4,16 +4,17 @@
 #define GAMEOBJECT_H_
 
 #include "CommonFunc.h"
+class Threat;
+
 
 #define gravity 0.8
 #define MAX_FALL_SPEED 20
 
 using namespace std;
 
-/// condition of the player
 enum condition { standing, running, charging, jumping };
 
-/// check input key
+
 typedef struct {
     int left;
     int right;
@@ -71,11 +72,12 @@ public:
 
     friend void Game::handleEvents();
     friend void Game::update();
+    void ThreatAttack(Threat& threat);
 
     SDL_Rect GetCollider() { return collider; }
 
 
-    void Update(SDL_Rect Tile[][60], int Mapping[][60]);
+    void Update(SDL_Rect Tile[][60], int Mapping[][60]); //dong 357
 
     void RunLeft();
     void RunRight();
@@ -88,12 +90,13 @@ public:
     void StopRunLeft();
 
     void SetClips();
-    void Render();
-    void ObjectClose();
+    void Render();//dong 404
+    void ObjectClose();//dong 469
     //va cham
     void CollideVertical(SDL_Rect& col, SDL_Rect Tile[][60], int Mapping[][60]);
-    void CollideHorizontal(SDL_Rect& col, SDL_Rect Tile[][60], int Mapping[][60]);
+    void CollideHorizontal(SDL_Rect& col, SDL_Rect Tile[][60], int Mapping[][60]);//179-205-231
     bool checkCollision2(SDL_Rect a, SDL_Rect b);
+
 
 
     int Getxvel() { return (int)xvel; }
@@ -108,9 +111,9 @@ public:
 
     // camera
     SDL_Rect Camera = { 0,0,SCREEN_WIDTH,SCREEN_HEIGHT };
+    SDL_Rect getCamera() {return Camera;}
 
 
 };
-
 
 #endif

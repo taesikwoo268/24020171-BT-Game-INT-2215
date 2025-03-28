@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1742998803 source:c:\users\admin\documents\c++ projects\ltnc 24020171\main.cpp
+1743169917 source:c:\users\admin\documents\c++ projects\ltnc 24020171\main.cpp
 	<iostream>
 	<string>
 	<stdio.h>
@@ -404,23 +404,25 @@
 	"begin_code.h"
 	"close_code.h"
 
-1742997924 c:\users\admin\documents\c++ projects\ltnc 24020171\commonfunc.h
+1743160930 c:\users\admin\documents\c++ projects\ltnc 24020171\commonfunc.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>
 	<SDL_ttf.h>
 	<iostream>
+	<vector>
 
-1742998133 source:c:\users\admin\documents\c++ projects\ltnc 24020171\player.cpp
+1743163096 source:c:\users\admin\documents\c++ projects\ltnc 24020171\player.cpp
 	"CommonFunc.h"
 	"player.h"
 	"texture.h"
+	"threat.h"
 	"map.h"
 
-1742997924 c:\users\admin\documents\c++ projects\ltnc 24020171\player.h
+1743162265 c:\users\admin\documents\c++ projects\ltnc 24020171\player.h
 	"CommonFunc.h"
 
-1742994945 source:c:\users\admin\documents\c++ projects\ltnc 24020171\map.cpp
+1743149355 source:c:\users\admin\documents\c++ projects\ltnc 24020171\map.cpp
 	"map.h"
 	"texture.h"
 	"CommonFunc.h"
@@ -429,9 +431,10 @@
 	<fstream>
 	<vector>
 
-1742994859 c:\users\admin\documents\c++ projects\ltnc 24020171\map.h
+1743162442 c:\users\admin\documents\c++ projects\ltnc 24020171\map.h
 	"CommonFunc.h"
 	"player.h"
+	"threat.h"
 
 1738937080 c:\users\admin\desktop\sdl2_mixer-2.8.1\x86_64-w64-mingw32\include\sdl2\sdl_mixer.h
 	"SDL_stdinc.h"
@@ -442,12 +445,15 @@
 	"begin_code.h"
 	"close_code.h"
 
-1742999237 source:c:\users\admin\documents\c++ projects\ltnc 24020171\commonfunc.cpp
+1743172950 source:c:\users\admin\documents\c++ projects\ltnc 24020171\commonfunc.cpp
 	"CommonFunc.h"
 	"texture.h"
 	"textObj.h"
 	"player.h"
 	"map.h"
+	"threat.h"
+	<fstream>
+	<vector>
 
 1740620198 c:\users\admin\desktop\sdl2-2.24.0\x86_64-w64-mingw32\include\sdl2\sdl_ttf.h
 	"SDL.h"
@@ -460,4 +466,13 @@
 1742750647 c:\users\admin\documents\c++ projects\ltnc 24020171\textobj.h
 	"CommonFunc.h"
 	<string>
+
+1743164553 source:c:\users\admin\documents\c++ projects\ltnc 24020171\threat.cpp
+	"threat.h"
+	"texture.h"
+	"player.h"
+
+1743162296 c:\users\admin\documents\c++ projects\ltnc 24020171\threat.h
+	"CommonFunc.h"
+	"map.h"
 

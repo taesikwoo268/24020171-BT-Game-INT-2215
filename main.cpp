@@ -38,8 +38,9 @@ int main(int argc, char* args[]){
         }
         else
         {
+            game->record();
             game->Ending();
-            SDL_Delay(7000);
+            SDL_Delay(6500);
             game->setWin(false);
         }
     }

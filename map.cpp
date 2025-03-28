@@ -58,26 +58,7 @@ void Map::LoadMap(const char* path)
 
 
 bool Map::checkCollision(SDL_Rect a, SDL_Rect b) {
-    int leftA, leftB;
-    int rightA, rightB;
-    int topA, topB;
-    int bottomA, bottomB;
-
-    leftA = a.x;
-    rightA = a.x + a.w;
-    topA = a.y;
-    bottomA = a.y + a.h;
-
-    leftB = b.x;
-    rightB = b.x + b.w;
-    topB = b.y;
-    bottomB = b.y + b.h;
-
-    if (bottomA <= topB||topA >= bottomB||rightA <= leftB||leftA >= rightB) {
-        return false;
-    }
-
-    return true;
+    return SDL_HasIntersection(&a,&b);
 }
 
 //ve map
@@ -109,9 +90,6 @@ void Map::DrawMap(SDL_Rect Camera) {
                         texture::Draw(stone, src, dest);
                     break;
                     }
-                case 3:
-                    break;
-
                 case 8:
                     {
                         texture::Draw(red_grass, src, dest);

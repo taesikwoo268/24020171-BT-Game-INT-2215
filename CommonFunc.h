@@ -7,6 +7,13 @@
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 #include <iostream>
+#include <vector>
+
+struct Inpute
+{
+        int left;
+        int right;
+};
 using namespace std;
 
 
@@ -38,6 +45,7 @@ public:
     void clean();
     bool Start();
     void Ending();
+    void record();
 
     bool running();
     bool winning();
@@ -46,7 +54,6 @@ public:
     static SDL_Renderer* renderer;
 
 };
-
 
 #endif // COMMON_FUNCTION_H_
 

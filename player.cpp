@@ -2,6 +2,7 @@
 #include "CommonFunc.h"
 #include "player.h"
 #include "texture.h"
+#include "threat.h"
 #include "map.h"
 
 SDL_Rect babeRect2 = { 500,112,48,48 };
@@ -84,13 +85,13 @@ void GameObject::SetClips(){
     JumpingLeft[1].h=41;
 }
 
+GameObject::GameObject(int x, int y)
+{
 
-GameObject::GameObject(int x, int y){
-    //Loading Texture for player
     objTextureRight = texture::LoadTexture("image/king_right_2.png");
     if (objTextureRight==NULL) cout << SDL_GetError();
     objTextureLeft = texture::LoadTexture("image/king_left_2.png");
-    //Loading Audio for player
+
     High = Mix_LoadWAV("sound/high.wav");
     if (High==NULL) cout << SDL_GetError();
     Step = Mix_LoadWAV("sound/step.wav");
@@ -138,29 +139,9 @@ GameObject::GameObject(int x, int y){
 }
 
 
-
 bool GameObject::checkCollision2(SDL_Rect a, SDL_Rect b)
 {
-    int leftA, leftB;
-    int rightA, rightB;
-    int topA, topB;
-    int bottomA, bottomB;
-
-    leftA = a.x;
-    rightA = a.x + a.w;
-    topA = a.y;
-    bottomA = a.y + a.h;
-
-    leftB = b.x;
-    rightB = b.x + b.w;
-    topB = b.y;
-    bottomB = b.y + b.h;
-
-    if (bottomA <= topB || topA >= bottomB || rightA <= leftB || leftA >= rightB) {
-        return false;
-    }
-
-    return true;
+    return SDL_HasIntersection(&a,&b);
 }
 
 
@@ -171,17 +152,16 @@ void GameObject::CollideVertical(SDL_Rect& col, SDL_Rect Tile[][60], int Mapping
     {
         for (int column = 0; column < 60; column++)
         {
-            if (Mapping[row][column] != 3 && checkCollision2(col, Tile[row][column]))
+            if (Mapping[row][column] != 3 && Mapping[row][column] != 7 && checkCollision2(col, Tile[row][column]))
             {
 
-                if (yvel > 0)
+                if (yvel > 0) // rơi xuống
                 {
                     ypos = Tile[row][column].y - KING_HEIGHT;
                     yvel = 0;
                     onGround = true;
-                    //status = standing;
                 }
-                else if (yvel < 0)
+                else if (yvel < 0)//nhảy lên
                 {
                     ypos = Tile[row][column].y + KING_HEIGHT;
                     yvel = 0;
@@ -198,9 +178,8 @@ void GameObject::CollideHorizontal(SDL_Rect& col, SDL_Rect Tile[][60], int Mappi
     {
         for (int column = 0; column < 60; column++)
         {
-            if (Mapping[row][column] != 3 && checkCollision2(col, Tile[row][column]))
+            if (Mapping[row][column] != 3 && Mapping[row][column]!=7 && checkCollision2(col, Tile[row][column]))
             {
-                //Mix_PlayChannel( -1, High, 0 );
 
                 if (xvel > 0)
                 {
@@ -252,8 +231,6 @@ void GameObject::RunRight(){
     //Mix_PlayChannel(-1,Step,0);
     xvel = maxxspeed;
 }
-
-
 void GameObject::PrepareJump(){
     startTime = SDL_GetTicks();
     status = charging;
@@ -272,8 +249,6 @@ void GameObject::Jump(){
     startTime = 0;
     jumpTime = 0;
 }
-
-
 void GameObject::JumpLeft()
 {
     jumpTime = SDL_GetTicks() - startTime;
@@ -292,8 +267,6 @@ xvel = -maxxspeed;
     startTime = 0;
     jumpTime = 0;
 }
-
-
 void GameObject::JumpRight()
 {
     jumpTime = SDL_GetTicks() - startTime;
@@ -302,7 +275,7 @@ void GameObject::JumpRight()
     Mix_PlayChannel(-1,Jumped,0);
 
 
-xvel = maxxspeed;
+    xvel = maxxspeed;
 
     if (yvel > -10) yvel = -10;
     if (yvel < -30) yvel = -30;
@@ -324,7 +297,27 @@ void GameObject::StopRunLeft()
     status = standing;
 }
 
-
+void GameObject::ThreatAttack(Threat& threat)
+{
+    SDL_Rect threatRect = threat.GetRect();
+    if (SDL_HasIntersection(&collider, &threatRect))
+    {
+        Mix_PlayChannel(-1,High,0);
+        if (xpos < threat.GetXPos())
+        {
+            xpos -= 20;
+            xvel = -5;
+        }
+        else
+        {
+            xpos += 20;
+            xvel = 5;
+        }
+        ypos -= 30;
+        yvel = -10;
+        onGround = false;
+    }
+}
 void GameObject::Update(SDL_Rect Tile[][60], int Mapping[][60])
 {
     if (onGround == true && status != charging)
@@ -369,7 +362,6 @@ void GameObject::Update(SDL_Rect Tile[][60], int Mapping[][60])
     destRect.y = (int)ypos - Camera.y;
 
     if (checkCollision2(collider, babeRect2) == true) isWin = true;//Dieu kien win
-
 }
 
 void GameObject::Render()
@@ -437,7 +429,6 @@ void GameObject::Render()
     }
 
 }
-
 void GameObject::ObjectClose()
 {
     SDL_DestroyTexture(objTextureRight);
@@ -447,4 +438,5 @@ void GameObject::ObjectClose()
     objTextureLeft = NULL;
     High = NULL;
 }
+
 
