@@ -12,13 +12,16 @@ SDL_Texture* background = NULL;
 SDL_Texture* foreground = NULL;
 SDL_Texture* victory = NULL;
 SDL_Texture* imgStart = NULL;
+SDL_Texture* imgGuide = NULL;
 SDL_Texture* babe = NULL;
 
 
 
 Mix_Music* Music = NULL;
 Mix_Music* BgMusic = NULL;
+Mix_Chunk* Beep = NULL;
 TTF_Font* font = NULL;
+TTF_Font* fontMenu = NULL;
 
 
 SDL_Rect babeSrcRect = { 0,0,48,48 };
@@ -44,9 +47,155 @@ Game::Game()
 Game::~Game()
 {}
 
+int Game::createMenu(TTF_Font* font){
+    imgStart = texture::LoadTexture("image/main_menu.png");
+    if (imgStart == NULL) return 1;
+    texture::Draw(imgStart, player->Camera, BgDest);
 
+    // 0 = play, 1 = guide,2 = exit;
+    const int numMenu = 3;
+    SDL_Rect menuRect[numMenu];
+
+    menuRect[0].x = 550;
+    menuRect[0].y = 360;
+    menuRect[0].w = 96;
+    menuRect[0].h = 32;
+
+    menuRect[1].x = 550;
+    menuRect[1].y = 420;
+    menuRect[1].w = 96;
+    menuRect[1].h = 32;
+
+    menuRect[2].x = 550;
+    menuRect[2].y = 480;
+    menuRect[2].w = 96;
+    menuRect[2].h = 32;
+
+    textObj textMenu[numMenu];
+
+    textMenu[0].setText("PLAY");
+    textMenu[0].setTextColor(white);
+    textMenu[1].setText("GUIDE");
+    textMenu[1].setTextColor(white);
+    textMenu[2].setText("EXIT");
+    textMenu[2].setTextColor(white);
+
+
+    bool chosen[numMenu] = {false, false};
+
+    SDL_Event mouseEvent;
+    while(true){
+        texture::Draw(imgStart, player->Camera, BgDest);
+        for (int i=0; i < numMenu; i++){
+            textMenu[i].loadFromRenderedText(font, renderer);
+            textMenu[i].renderText(renderer, menuRect[i].x, menuRect[i].y);
+
+        }
+        while(SDL_PollEvent(&mouseEvent)){
+            switch(mouseEvent.type){
+                case SDL_QUIT:
+                    return 2;
+                case SDL_MOUSEMOTION:
+                    for (int i=0; i<numMenu; i++){
+                        if(checkSelected(mouseEvent.motion.x, mouseEvent.motion.y, menuRect[i])){
+                            if (chosen[i] == false){
+                                chosen[i] = true;
+                                textMenu[i].setTextColor(green);
+                                Mix_PlayChannel(-1,Beep,0);
+
+                            }
+                        } else {
+                            if (chosen[i] == true){
+                                chosen[i] = false;
+                                textMenu[i].setTextColor(white);
+
+                            }
+                        }
+                    }
+                    break;
+                case SDL_MOUSEBUTTONDOWN:
+                    for (int i=0; i < numMenu; i++){
+                        if(checkSelected(mouseEvent.motion.x, mouseEvent.motion.y, menuRect[i])){
+                                return i;
+                            }
+                        }
+                    break;
+                case SDL_KEYDOWN:
+                    if (mouseEvent.key.keysym.sym == SDLK_ESCAPE){
+                        return 2;
+                    }
+                default:
+                    break;
+            };
+
+        }
+        SDL_RenderPresent(renderer);
+    }
+
+    return 0;
+}
+int Game::createGuide(TTF_Font* font)
+{
+    imgGuide = texture::LoadTexture("image/guide.png");
+    texture::Draw(imgGuide,player->Camera,BgDest);
+    SDL_Rect guideRect;
+
+    guideRect.x = 460;
+    guideRect.y = 610;
+    guideRect.w = 96;
+    guideRect.h = 32;
+
+    textObj textGuide;
+    textGuide.setText("OK");
+    textGuide.setTextColor(black);
+
+    bool chosen = false;
+
+    SDL_Event mouseEvent;
+    while(true){
+        texture::Draw(imgGuide, player->Camera, BgDest);
+        textGuide.loadFromRenderedText(font, renderer);
+        textGuide.renderText(renderer,guideRect.x,guideRect.y);
+        while(SDL_PollEvent(&mouseEvent)){
+            switch(mouseEvent.type){
+                case SDL_QUIT:
+                    return 3;
+                case SDL_MOUSEMOTION:
+                    if(checkSelected(mouseEvent.motion.x, mouseEvent.motion.y, guideRect)){
+                        if (chosen == false){
+                            chosen = true;
+                            textGuide.setTextColor(green);
+                            Mix_PlayChannel(-1,Beep,0);
+                        }
+                    }
+                    else {
+                        if (chosen == true){
+                            chosen = false;
+                            textGuide.setTextColor(black);
+                        }
+                    }
+
+                    break;
+                case SDL_MOUSEBUTTONDOWN:
+                    if(checkSelected(mouseEvent.motion.x, mouseEvent.motion.y, guideRect)){
+                            return 1;
+                    }
+                    break;
+                case SDL_KEYDOWN:
+                    if (mouseEvent.key.keysym.sym == SDLK_ESCAPE){
+                        return 3;
+                    }
+                default:
+                    break;
+            }
+        }
+        SDL_RenderPresent(renderer);
+    }
+    return 0;
+}
 void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
+    state = MainMenu;
     int flag = 0;
     if (fullscreen)
     {
@@ -70,6 +219,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         if (TTF_Init() == 0)
         {
             font = TTF_OpenFont("font/font2.ttf", 24);
+            fontMenu = TTF_OpenFont("font/font2.ttf",48);
         }
 
     }
@@ -84,7 +234,9 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     Mix_VolumeMusic(MIX_MAX_VOLUME/2);
     BgMusic = Mix_LoadMUS("sound/bgMusic.wav");
     Mix_VolumeMusic(MIX_MAX_VOLUME);
-    if (Music==NULL||BgMusic==NULL) cout << SDL_GetError();
+    Beep = Mix_LoadWAV("sound/beep.wav");
+    Mix_VolumeChunk(Beep,MIX_MAX_VOLUME/2);
+    if (Music==NULL||BgMusic==NULL||Beep==NULL) cout << SDL_GetError();
     win = false;
 
 
@@ -105,18 +257,35 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     threats.push_back(new Threat (470,86));
     threats.push_back(new Threat (470,3700));
 
-    bool isBegin = Start();
-    if (isBegin)
+    isStart = true;
+
+    while (isStart)
     {
-        isRunning = true;
-        startTime = SDL_GetTicks()/1000;
-    }
-    else
-    {
-        isRunning = false;
+        if (state==MainMenu)
+        {
+            int GameState = createMenu(fontMenu);
+            if (GameState==0){
+                isStart=false;
+                isRunning=true;
+                startTime=SDL_GetTicks()/1000;
+            }
+            if (GameState==2) {
+                isRunning = false;
+                isStart=false;
+            }
+            if (GameState==1) {
+                state = Guide;
+            }
+
+        }
+        if (state==Guide)
+        {
+            int tmp = createGuide(fontMenu);
+            if (tmp==1) state = MainMenu;
+
+        }
     }
 }
-
 
 void Game::handleEvents()
 {
@@ -232,28 +401,28 @@ void Game::update()
     }
 }
 
-bool Game::Start()
-{
-    texture::Draw(imgStart,player->Camera,BgDest);
-    SDL_Event e;
-    while (true)
-    {
-        texture::Draw(imgStart,player->Camera,BgDest);
-        while (SDL_PollEvent(&e))
-        {
-            switch(e.key.keysym.sym)
-            {
-            case SDLK_y:
-                return true;
-            case SDLK_n:
-                return false;
-            }
-
-        }
-        SDL_RenderPresent(renderer);
-    }
-    return true;
-}
+//bool Game::Start()
+//{
+//    texture::Draw(imgStart,player->Camera,BgDest);
+//    SDL_Event e;
+//    while (true)
+//    {
+//        texture::Draw(imgStart,player->Camera,BgDest);
+//        while (SDL_PollEvent(&e))
+//        {
+//            switch(e.key.keysym.sym)
+//            {
+//            case SDLK_y:
+//                return true;
+//            case SDLK_n:
+//                return false;
+//            }
+//
+//        }
+//        SDL_RenderPresent(renderer);
+//    }
+//    return true;
+//}
 void Game::Ending()
 {
     SDL_RenderClear(renderer);
@@ -363,4 +532,9 @@ bool Game::running()
 bool Game::winning()
 {
     return win;
+}
+bool Game::checkSelected(const int& x, const int& y, const SDL_Rect& rect)
+{
+    if (x >= rect.x && x <= rect.x + rect.w && y >= rect.y && y <= rect.y + rect.h) return true;
+    return false;
 }

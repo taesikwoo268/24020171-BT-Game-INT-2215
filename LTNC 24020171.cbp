@@ -54,6 +54,8 @@
 		<Unit filename="textObj.h" />
 		<Unit filename="texture.cpp" />
 		<Unit filename="texture.h" />
+		<Unit filename="threat.cpp" />
+		<Unit filename="threat.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

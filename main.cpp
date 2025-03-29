@@ -40,7 +40,7 @@ int main(int argc, char* args[]){
         {
             game->record();
             game->Ending();
-            SDL_Delay(6500);
+            SDL_Delay(6200);
             game->setWin(false);
         }
     }

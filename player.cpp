@@ -316,6 +316,7 @@ void GameObject::ThreatAttack(Threat& threat)
         ypos -= 30;
         yvel = -10;
         onGround = false;
+        if(status==charging) status = standing;
     }
 }
 void GameObject::Update(SDL_Rect Tile[][60], int Mapping[][60])
