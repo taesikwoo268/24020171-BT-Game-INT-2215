@@ -25,8 +25,8 @@ TTF_Font* fontMenu = NULL;
 
 
 SDL_Rect babeSrcRect = { 0,0,48,48 };
-SDL_Rect babeDestRect = { 500,112,48,48 };//luu vi tri theo camera
-SDL_Rect babeRect = { 500,112,48,48 };//luu vi tri co dinh
+SDL_Rect babeDestRect = { 450,112,48,48 };//luu vi tri theo camera
+SDL_Rect babeRect = { 450,112,48,48 };//luu vi tri co dinh
 
 Uint32  score,hscore,timeVal, startTime;
 
