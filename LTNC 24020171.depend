@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1743256650 source:c:\users\admin\documents\c++ projects\ltnc 24020171\main.cpp
+1743583366 source:c:\users\admin\documents\c++ projects\ltnc 24020171\main.cpp
 	<iostream>
 	<string>
 	<stdio.h>
@@ -419,7 +419,7 @@
 	"threat.h"
 	"map.h"
 
-1743162265 c:\users\admin\documents\c++ projects\ltnc 24020171\player.h
+1743590410 c:\users\admin\documents\c++ projects\ltnc 24020171\player.h
 	"CommonFunc.h"
 
 1743149355 source:c:\users\admin\documents\c++ projects\ltnc 24020171\map.cpp
@@ -445,7 +445,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1743269812 source:c:\users\admin\documents\c++ projects\ltnc 24020171\commonfunc.cpp
+1743589369 source:c:\users\admin\documents\c++ projects\ltnc 24020171\commonfunc.cpp
 	"CommonFunc.h"
 	"texture.h"
 	"textObj.h"

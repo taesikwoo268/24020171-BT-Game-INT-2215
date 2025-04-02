@@ -52,7 +52,7 @@ private:
     Mix_Chunk* Jumped = NULL;
 
 
-    // for running animation
+    // for animation
     SDL_Rect RunningRight[5];
     SDL_Rect RunningLeft[5];
     SDL_Rect ChargingJump;

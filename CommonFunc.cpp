@@ -401,28 +401,6 @@ void Game::update()
     }
 }
 
-//bool Game::Start()
-//{
-//    texture::Draw(imgStart,player->Camera,BgDest);
-//    SDL_Event e;
-//    while (true)
-//    {
-//        texture::Draw(imgStart,player->Camera,BgDest);
-//        while (SDL_PollEvent(&e))
-//        {
-//            switch(e.key.keysym.sym)
-//            {
-//            case SDLK_y:
-//                return true;
-//            case SDLK_n:
-//                return false;
-//            }
-//
-//        }
-//        SDL_RenderPresent(renderer);
-//    }
-//    return true;
-//}
 void Game::Ending()
 {
     SDL_RenderClear(renderer);
@@ -453,7 +431,6 @@ void Game::render()
     player->Render();
     texture::Draw(foreground, player->Camera, BgDest);
     texture::Draw(babe, babeSrcRect, babeDestRect);
-
 
 
     //Time and high score text

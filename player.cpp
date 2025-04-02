@@ -5,7 +5,7 @@
 #include "threat.h"
 #include "map.h"
 
-SDL_Rect babeRect2 = { 500,112,48,48 };
+SDL_Rect babeRect2 = { 450,112,48,48 }; //vi tri win
 
 void GameObject::SetClips(){
     //Run RIGHT
@@ -256,9 +256,7 @@ void GameObject::JumpLeft()
     yvel = -(jumpTime * 0.02);
     Mix_PlayChannel(-1,Jumped,0);
 
-
-
-xvel = -maxxspeed;
+    xvel = -maxxspeed;
     if (yvel > -10) yvel = -10;
     if (yvel < -30) yvel = -30;
 
@@ -306,7 +304,7 @@ void GameObject::ThreatAttack(Threat& threat)
         if (xpos < threat.GetXPos())
         {
             xpos -= 20;
-            xvel = -5;
+//            xvel = -5;
         }
         else
         {
@@ -314,7 +312,7 @@ void GameObject::ThreatAttack(Threat& threat)
             xvel = 5;
         }
         ypos -= 30;
-        yvel = -10;
+//        yvel = -10;
         onGround = false;
         if(status==charging) status = standing;
     }
